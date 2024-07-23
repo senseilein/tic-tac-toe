@@ -13,7 +13,8 @@ export default function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
 
   const handleClick = (i) => {
-    if (squares[i]) {
+    //if a user has clicked a square that already has a X or and O OR a player has already won, return early
+    if (squares[i] || calculateWinner(squares)) {
       return;
     }
 
@@ -55,6 +56,37 @@ export default function Board() {
       </div>
     </>
   );
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+
+  /**
+   The function iterates over each possible winning combination in lines.
+For each line, it extracts the three indices (a, b, and c) representing a potential winning line.
+It checks if:
+
+    squares[a] is not null (i.e., the square is occupied).
+    squares[a] is equal to squares[b] and squares[c], meaning all three squares in the line contain the same player's symbol.
+
+If these conditions are true, it returns squares[a], which is either 'X' or 'O', indicating the winning player.
+   */
 }
 
 /*
